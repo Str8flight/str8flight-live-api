@@ -1,5 +1,4 @@
 // api/checkLive.js
-import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const CHANNEL_ID = "UCp2UwspaBTvuEDMe9kx3aoA"; // Your YouTube Channel ID
@@ -7,6 +6,8 @@ export default async function handler(req, res) {
 
   try {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&eventType=live&type=video&key=${API_KEY}`;
+    
+    // Use native fetch (no import needed)
     const response = await fetch(url);
     const data = await response.json();
 
