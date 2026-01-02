@@ -1,17 +1,19 @@
-
-
 export default async function handler(req, res) {
+  // Allow browser requests
+  res.setHeader('Access-Control-Allow-Origin', '*'); 
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   try {
     const CHANNEL_ID = 'UCp2UwspaBTvuEDMe9kx3aoA';
     const API_KEY = process.env.YOUTUBE_API_KEY;
 
-    if (!API_KEY) {
-      return res.status(500).json({ error: 'Missing API key' });
-    }
+    if (!API_KEY) return res.status(500).json({ error: 'Missing API key' });
 
     const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=1`;
-
-    const response = await fetch(url);
+    const response = await fetch(url); // global fetch
     const data = await response.json();
 
     if (!data.items || data.items.length === 0) {
